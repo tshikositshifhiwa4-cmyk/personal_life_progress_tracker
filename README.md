@@ -13,8 +13,6 @@
 
 **A full-stack personal productivity system and portfolio-quality Data Engineering solution.**
 
-[Features](#-features) · [Architecture](#-architecture) · [Database Schema](#-database-schema) · [Tech Stack](#-tech-stack) · [Screenshots](#-screenshots)
-
 </div>
 
 ---
@@ -23,9 +21,9 @@
 
 This is not a generic todo app.
 
-I built this as a personal productivity system designed around my actual life — balancing an MSc research degree, active Data Engineering, university laboratory sessions, weekly church commitments, and personal wellbeing.
+I built this as a personal productivity system designed around my actual life, balancing an MSc research degree, active Data Engineering, university laboratory sessions, weekly church commitments, and personal wellbeing.
 
-The goal was twofold: build something I would actually use every day, and demonstrate end-to-end data engineering skills across the full BI development lifecycle — from raw data capture through ETL pipelines to dashboard insights.
+The goal was twofold: build something I would actually use every day, and demonstrate end-to-end data engineering skills across the full BI development lifecycle, from raw data capture through ETL pipelines to dashboard insights.
 
 Every feature in this app exists because I needed it.
 
@@ -59,7 +57,7 @@ Every feature in this app exists because I needed it.
 ### Automated Email Reminder
 - Sends a personalised HTML email every day at 22:00
 - Warm, encouraging tone with a direct link to the tracker
-- Automated via cron — no manual intervention required
+- Automated via cron, no manual intervention required
 
 ### Weekly ETL Pipeline
 - Runs automatically every Sunday at 21:00
@@ -76,17 +74,17 @@ Every feature in this app exists because I needed it.
 ┌─────────────────────────────────────────────────────────────────┐
 │                        USER INTERFACE                           │
 │                                                                 │
-│   Home Page  →  Lab Day / No-Lab Day Checklist  →  Dashboard   │
-│   (index.html)      (lab_day / no_lab_day.html)  (dashboard)   │
+│   Home Page  →  Lab Day / No-Lab Day Checklist  →  Dashboard    │
+│   (index.html)      (lab_day / no_lab_day.html)  (dashboard)    │
 └────────────────────────────┬────────────────────────────────────┘
                              │ HTTP (Flask routes)
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                       FLASK BACKEND                             │
 │                                                                 │
-│   app.py          → Route handling, form processing            │
-│   database.py     → All PostgreSQL queries                     │
-│   config.py       → Environment variable management           │
+│   app.py          → Route handling, form processing             │
+│   database.py     → All PostgreSQL queries                      │
+│   config.py       → Environment variable management             │
 └──────────────┬──────────────────────────┬───────────────────────┘
                │                          │
                ▼                          ▼
@@ -113,25 +111,25 @@ Every feature in this app exists because I needed it.
                                      │
           ┌──────────────────────────┼──────────────────────────┐
           │                          │                          │
-     FRONTEND                   BACKEND                    DATA LAYER
-          │                          │                          │
-    ┌─────┴─────┐             ┌──────┴──────┐           ┌──────┴──────┐
-    │  Pages    │             │   Flask     │           │ PostgreSQL  │
-    │ ─ Home    │             │   Routes    │           │  Tables     │
-    │ ─ Lab Day │             │ ─ /         │           │ ─ daily_    │
-    │ ─ No-Lab  │             │ ─ /lab-day  │           │   checkins  │
-    │ ─ Dashboard│            │ ─ /no-lab   │           │ ─ weekly_   │
-    │ ─ Report  │             │ ─ /dashboard│           │   summary   │
-    └─────┬─────┘             │ ─ /submit  │           └──────┬──────┘
-          │                   └──────┬──────┘                 │
-    ┌─────┴─────┐                   │                  ┌──────┴──────┐
-    │  Features │             ┌──────┴──────┐          │   Views     │
-    │ ─ Checklist│            │  database.py│          │ ─ current   │
-    │ ─ Mood    │             │ ─ save      │          │   week      │
-    │ ─ Progress│             │ ─ stats     │          │ ─ daily     │
-    │   bar     │             │ ─ trends    │          │   completion│
-    │ ─ Confetti│             │ ─ reports   │          │ ─ mood      │
-    └─────┬─────┘             └─────────────┘          └─────────────┘
+     FRONTEND                    BACKEND                    DATA LAYER
+          │                           │                          │
+    ┌─────┴──────┐             ┌──────┴──────┐            ┌──────┴──────┐
+    │  Pages     │             │   Flask     │            │ PostgreSQL  │
+    │ ─ Home     │             │   Routes    │            │  Tables     │
+    │ ─ Lab Day  │             │ ─ /         │            │ ─ daily_    │
+    │ ─ No-Lab   │             │ ─ /lab-day  │            │   checkins  │
+    │ ─ Dashboard│             │ ─ /no-lab   │            │ ─ weekly_   │
+    │ ─ Report   │             │ ─ /dashboard│            │   summary   │
+    └─────┬──────┘             │ ─ /submit   │            └──────┬──────┘
+          │                    └──────┬──────┘                   │
+    ┌─────┴──────┐                    │                   ┌──────┴──────┐
+    │  Features  │             ┌──────┴──────┐            │   Views     │
+    │ ─ Checklist│             │  database.py│            │ ─ current   │
+    │ ─ Mood     │             │ ─ save      │            │   week      │
+    │ ─ Progres s│             │ ─ stats     │            │ ─ daily     │
+    │   bar      │             │ ─ trends    │            │   completion│
+    │ ─ Confetti │             │ ─ reports   │            │ ─ mood      │
+    └─────┬──────┘             └─────────────┘            └─────────────┘
           │
     ┌─────┴──────┐
     │ Animations │
@@ -180,6 +178,7 @@ Every feature in this app exists because I needed it.
 ##  Screenshots
 
 ### Home Page
+<img width="1440" height="787" alt="homepahe" src="https://github.com/user-attachments/assets/53187b24-2258-4d73-963b-19e96c7f0c1e" />
 
 
 ---
