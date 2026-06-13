@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>No-Lab Day Check-In ✨</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="brand">Princess <span>Tracker</span> ✨</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>💻 No-Lab Day Check-In</h1>
+    <p id="current-date">Loading…</p>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="checklist-container">
+    <form method="POST" action="/submit-checkin">
+      <input type="hidden" name="day_type" value="no_lab">
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill"></div>
+      </div>
+      <p id="progress-label" style="text-align:center;font-size:0.82rem;color:var(--text-light);margin-bottom:1.2rem;"></p>
+
+      <!-- TASKS CARD -->
+      <div class="checklist-card" style="animation:fadeInUp 0.5s ease both;">
+        <h2>✅ Today's Tasks</h2>
+
+        {% if is_friday %}
+        <div class="check-item">
+          <input type="checkbox" id="church" name="church_completed" value="1">
+          <label for="church">⛪ Church (18:00 – 21:00)</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="github" name="github_updated" value="1">
+          <label for="github">🐙 GitHub update</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="linkedin" name="linkedin_updated" value="1">
+          <label for="linkedin">💼 LinkedIn update</label>
+        </div>
+        {% endif %}
+
+        {% if is_sunday %}
+        <div class="check-item">
+          <input type="checkbox" id="church_sun" name="church_completed" value="1">
+          <label for="church_sun">⛪ Church</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="weekly_plan" name="weekly_planning" value="1">
+          <label for="weekly_plan">📋 Weekly planning completed</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="weekly_report" name="weekly_report_reviewed" value="1">
+          <label for="weekly_report">📊 Weekly report reviewed</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="weekly_goals" name="weekly_goals_prepared" value="1">
+          <label for="weekly_goals">🎯 Weekly goals prepared</label>
+        </div>
+        {% endif %}
+
+        <div class="check-item">
+          <input type="checkbox" id="jobs" name="job_applications_completed" value="1">
+          <label for="jobs">💼 Job applications completed</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="msc" name="msc_completed" value="1">
+          <label for="msc">🎓 MSc writing/reading completed</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="portfolio" name="portfolio_completed" value="1">
+          <label for="portfolio">🗂️ Portfolio project work completed</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="class" name="class_completed" value="1">
+          <label for="class">📚 {% if today.weekday() < 4 %}Data Engineering class attended{% else %}Studying completed{% endif %}</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="household" name="household_completed" value="1">
+          <label for="household">🏠 Household tasks completed</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="selfcare" name="selfcare_completed" value="1">
+          <label for="selfcare">💆🏾‍♀️ Self-care</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="rest" name="rest_completed" value="1">
+          <label for="rest">😴 Rest</label>
+        </div>
+      </div>
+
+      <!-- NOTES CARD -->
+      <div class="checklist-card" style="animation:fadeInUp 0.5s ease 0.1s both;">
+        <h2>📝 Reflections</h2>
+
+        <div class="form-group">
+          <label for="job_apps_count">Number of job applications submitted</label>
+          <input type="number" id="job_apps_count" name="job_applications_count" min="0" placeholder="0">
+        </div>
+
+        <div class="form-group">
+          <label for="main_achievement">Main achievement today</label>
+          <input type="text" id="main_achievement" name="main_achievement" placeholder="What are you proud of today?">
+        </div>
+
+        <div class="form-group">
+          <label for="tomorrow_task">Major task for tomorrow</label>
+          <input type="text" id="tomorrow_task" name="tomorrow_major_task" placeholder="What's the priority tomorrow?">
+        </div>
+
+        <div class="form-group">
+          <label>Mood today</label>
+          <div class="mood-row">
+            <button type="button" class="mood-btn" data-mood="Energised">⚡ Energised</button>
+            <button type="button" class="mood-btn" data-mood="Focused">🎯 Focused</button>
+            <button type="button" class="mood-btn" data-mood="Tired">😴 Tired</button>
+            <button type="button" class="mood-btn" data-mood="Stressed">😤 Stressed</button>
+            <button type="button" class="mood-btn" data-mood="Happy">😊 Happy</button>
+            <button type="button" class="mood-btn" data-mood="Overwhelmed">😩 Overwhelmed</button>
+            <button type="button" class="mood-btn" data-mood="Sick">🤢 Sick</button>
+          </div>
+          <input type="hidden" id="mood-value" name="mood">
+        </div>
+
+        <div class="form-group">
+          <label for="notes_field">Notes</label>
+          <textarea id="notes_field" name="notes" rows="4" placeholder="Anything else on your mind?"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">✨ Save Today's Check-In</button>
+    </form>
+  </div>
+
+  <footer>
+    Built with <span>♥</span> for your journey · Princess Tracker
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard ✨ Princess Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="brand">Princess <span>Tracker</span> ✨</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/weekly-report">Weekly Report</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>📊 Your Dashboard</h1>
+    <p>Week of {{ week_start }} – {{ week_end }}</p>
+  </div>
+
+  <div class="dashboard-container">
+
+    <!-- ── INSIGHTS SLIDER ── -->
+    <h2 class="dash-section-title">💡 Weekly Insights</h2>
+    <div class="insights-slider">
+      {% for insight in insights %}
+      <div class="insight-slide {% if loop.first %}active{% endif %}">
+        <div class="tag">📌 Insight {{ loop.index }} of {{ insights|length }}</div>
+        <div class="text">{{ insight }}</div>
+      </div>
+      {% else %}
+      <div class="insight-slide active">
+        <div class="tag">📌 Insight</div>
+        <div class="text">Complete your first check-in to see personalised insights here.</div>
+      </div>
+      {% endfor %}
+      <svg style="position:absolute;width:0;height:0">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#f78fb3"/>
+            <stop offset="50%"  stop-color="#9b59b6"/>
+            <stop offset="100%" stop-color="#74b9ff"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="slider-dots" style="margin-top:0.8rem;">
+      {% for insight in insights %}
+      <span {% if loop.first %}class="active"{% endif %}></span>
+      {% else %}
+      <span class="active"></span>
+      {% endfor %}
+    </div>
+
+    <!-- ── KPI CARDS ── -->
+    <h2 class="dash-section-title">📈 This Week's KPIs</h2>
+    <div class="kpi-grid">
+
+      <!-- Completion % -->
+      <div class="kpi-card">
+        <div class="ring-wrap">
+          <svg class="ring-chart" viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="35"/>
+            <circle class="ring-fg" cx="40" cy="40" r="35"
+              data-pct="{{ stats.completion_percentage|default(0) }}"/>
+          </svg>
+          <span class="kpi-value" data-count="{{ stats.completion_percentage|default(0) }}" data-suffix="%">0%</span>
+          <span class="kpi-label">Weekly Completion</span>
+        </div>
+      </div>
+
+      <!-- Tasks Completed -->
+      <div class="kpi-card">
+        <span class="kpi-icon">✅</span>
+        <div class="kpi-value" data-count="{{ stats.total_tasks_completed|default(0) }}">0</div>
+        <div class="kpi-label">Tasks Completed</div>
+      </div>
+
+      <!-- Job Applications -->
+      <div class="kpi-card">
+        <span class="kpi-icon">💼</span>
+        <div class="kpi-value" data-count="{{ stats.total_job_applications|default(0) }}">0</div>
+        <div class="kpi-label">Job Applications</div>
+      </div>
+
+      <!-- MSc Days -->
+      <div class="kpi-card">
+        <span class="kpi-icon">🎓</span>
+        <div class="kpi-value" data-count="{{ stats.msc_days|default(0) }}">0</div>
+        <div class="kpi-label">MSc Progress Days</div>
+      </div>
+
+      <!-- Lab Days -->
+      <div class="kpi-card">
+        <span class="kpi-icon">🔬</span>
+        <div class="kpi-value" data-count="{{ stats.lab_days|default(0) }}">0</div>
+        <div class="kpi-label">Lab Days</div>
+      </div>
+
+      <!-- DE Class -->
+      <div class="kpi-card">
+        <span class="kpi-icon">📚</span>
+        <div class="kpi-value" data-count="{{ stats.class_days|default(0) }}">0</div>
+        <div class="kpi-label">DE Classes Attended</div>
+      </div>
+
+      <!-- Church -->
+      <div class="kpi-card">
+        <span class="kpi-icon">⛪</span>
+        <div class="kpi-value" data-count="{{ stats.church_days|default(0) }}">0</div>
+        <div class="kpi-label">Church Attendance</div>
+      </div>
+
+      <!-- Self-Care -->
+      <div class="kpi-card">
+        <span class="kpi-icon">💆🏾‍♀️</span>
+        <div class="kpi-value" data-count="{{ stats.selfcare_days|default(0) }}">0</div>
+        <div class="kpi-label">Self-Care Days</div>
+      </div>
+
+      <!-- Rest -->
+      <div class="kpi-card">
+        <span class="kpi-icon">😴</span>
+        <div class="kpi-value" data-count="{{ stats.rest_days|default(0) }}">0</div>
+        <div class="kpi-label">Rest Days</div>
+      </div>
+
+    </div>
+
+    <!-- Best & Needs Attention -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1.5rem 0 0;">
+      <div class="kpi-card" style="text-align:left;padding:1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.4rem;">🏆</div>
+        <div style="font-size:0.75rem;color:var(--text-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">Best Performing Area</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--purple-400);font-weight:700;">
+          {{ stats.best_category|default('—') }}
+        </div>
+      </div>
+      <div class="kpi-card" style="text-align:left;padding:1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.4rem;">📍</div>
+        <div style="font-size:0.75rem;color:var(--text-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">Needs Attention</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--pink-400);font-weight:700;">
+          {{ stats.area_needing_attention|default('—') }}
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WEEKLY TREND CHART ── -->
+    <h2 class="dash-section-title">📅 Weekly Productivity Trend</h2>
+    <div class="chart-card">
+      <h3>Daily completion % this week</h3>
+      <div class="bar-chart" id="trend-chart">
+        {% for day in daily_trend %}
+        <div class="bar-col">
+          <div class="bar-fill" data-h="{{ day.pct }}"></div>
+          <span class="bar-label">{{ day.label }}</span>
+        </div>
+        {% else %}
+        <!-- placeholder bars -->
+        {% for label in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] %}
+        <div class="bar-col">
+          <div class="bar-fill" data-h="0"></div>
+          <span class="bar-label">{{ label }}</span>
+        </div>
+        {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ── CONSISTENCY SCORE ── -->
+    <h2 class="dash-section-title">🔥 Consistency Score</h2>
+    <div class="kpi-card" style="max-width:320px;margin:0 auto;">
+      <div class="ring-wrap">
+        <svg class="ring-chart" viewBox="0 0 80 80" style="width:100px;height:100px;">
+          <circle class="ring-bg" cx="40" cy="40" r="35"/>
+          <circle class="ring-fg" cx="40" cy="40" r="35"
+            data-pct="{{ stats.consistency_score|default(0) }}"/>
+        </svg>
+        <span class="kpi-value" data-count="{{ stats.consistency_score|default(0) }}" data-suffix="%">0%</span>
+        <span class="kpi-label">Weekly Consistency</span>
+      </div>
+    </div>
+
+  </div><!-- /dashboard-container -->
+
+  <footer>Built with <span>♥</span> for your journey · Princess Tracker</footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

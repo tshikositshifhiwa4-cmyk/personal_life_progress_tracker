@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Princess Tracker ✨</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <a href="/" class="brand">Princess <span>Tracker</span> ✨</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <!-- Profile -->
+    <div class="profile-ring">
+      <!-- Replace profile.jpg with your actual photo -->
+      <img src="{{ url_for('static', filename='images/profile.png') }}" alt="Profile">
+    </div>
+
+    <!-- Date -->
+    <p class="hero-date" id="current-date">Loading date…</p>
+
+    <!-- Greeting -->
+    <h1 class="hero-greeting">Good day, Princess 🌸</h1>
+
+    <!-- Special day badge -->
+    <span id="day-badge" style="
+      display:none;
+      background: linear-gradient(135deg,#9b59b6,#0984e3);
+      color:white;
+      padding:0.4rem 1.2rem;
+      border-radius:30px;
+      font-size:0.82rem;
+      font-weight:600;
+      letter-spacing:0.05em;
+      margin: 0.4rem 0 0.8rem;
+    "></span>
+
+    <!-- Quote -->
+    <p class="hero-quote">I am becoming the woman I prayed to be.</p>
+
+    <!-- Day Buttons -->
+    <div class="day-buttons">
+      <a href="/lab-day" class="btn-day btn-lab">
+        🔬 Lab Day
+      </a>
+      <a href="/no-lab-day" class="btn-day btn-nolab">
+        💻 No-Lab Day
+      </a>
+    </div>
+
+  </section>
+
+  <footer>
+    Built with <span>♥</span> for your journey · Princess Tracker
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

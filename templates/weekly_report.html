@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weekly Report ✨ Princess Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="brand">Princess <span>Tracker</span> ✨</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>📋 Weekly Report</h1>
+    <p>{{ report.week_start }} – {{ report.week_end }}</p>
+  </div>
+
+  <div class="checklist-container">
+
+    <!-- Summary card -->
+    <div class="checklist-card" style="animation:fadeInUp 0.5s ease both;">
+      <h2>🌟 Week Summary</h2>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--text-mid);line-height:1.8;">
+        {{ report.weekly_insight|default("No report generated yet. Run the weekly ETL on Sunday evening.") }}
+      </div>
+    </div>
+
+    <!-- Stats card -->
+    <div class="checklist-card" style="animation:fadeInUp 0.5s ease 0.1s both;">
+      <h2>📊 Numbers</h2>
+
+      {% set items = [
+        ('✅ Tasks Completed',          report.total_tasks_completed,    report.total_possible_tasks),
+        ('💼 Job Applications',          report.total_job_applications,   none),
+        ('🎓 MSc Days',                  report.msc_days,                 none),
+        ('🔬 Lab Days',                  report.lab_days,                 none),
+        ('📚 DE Classes',                report.class_days,               none),
+        ('⛪ Church Attendance',          report.church_days,              none),
+        ('💆🏾‍♀️ Self-Care Days',         report.selfcare_days,            none),
+        ('😴 Rest Days',                 report.rest_days,                none)
+      ] %}
+
+      {% for label, val, total in items %}
+      <div style="display:flex;justify-content:space-between;align-items:center;
+                  padding:0.65rem 0;border-bottom:1px solid rgba(247,143,179,0.12);">
+        <span style="font-size:0.95rem;color:var(--text-mid);">{{ label }}</span>
+        <span style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--purple-400);font-weight:700;">
+          {{ val|default(0) }}{% if total %} / {{ total }}{% endif %}
+        </span>
+      </div>
+      {% endfor %}
+
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;">
+        <span style="font-size:0.95rem;color:var(--text-mid);">📈 Completion</span>
+        <span style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--purple-400);font-weight:700;">
+          {{ report.completion_percentage|default(0) }}%
+        </span>
+      </div>
+    </div>
+
+    <!-- Best/worst -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
+      <div class="checklist-card" style="animation:fadeInUp 0.5s ease 0.2s both;">
+        <h2>🏆 Best Area</h2>
+        <p style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--purple-400);">
+          {{ report.best_category|default('—') }}
+        </p>
+      </div>
+      <div class="checklist-card" style="animation:fadeInUp 0.5s ease 0.25s both;">
+        <h2>📍 Needs Focus</h2>
+        <p style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--pink-400);">
+          {{ report.area_needing_attention|default('—') }}
+        </p>
+      </div>
+    </div>
+
+    <a href="/" class="btn-submit" style="text-align:center;display:block;text-decoration:none;margin-top:1.5rem;">
+      🌸 Back to Home
+    </a>
+
+  </div>
+
+  <footer>Built with <span>♥</span> for your journey · Princess Tracker</footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

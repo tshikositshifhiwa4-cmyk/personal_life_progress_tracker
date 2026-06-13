@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lab Day Check-In ✨</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="brand">Princess <span>Tracker</span> ✨</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>🔬 Lab Day Check-In</h1>
+    <p id="current-date">Loading…</p>
+  </div>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="checklist-container">
+    <form method="POST" action="/submit-checkin">
+      <input type="hidden" name="day_type" value="lab">
+
+      <!-- Progress bar -->
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill"></div>
+      </div>
+      <p id="progress-label" style="text-align:center;font-size:0.82rem;color:var(--text-light);margin-bottom:1.2rem;"></p>
+
+      <!-- TASKS CARD -->
+      <div class="checklist-card" style="animation:fadeInUp 0.5s ease both;">
+        <h2>✅ Today's Tasks</h2>
+
+        {% if is_friday %}
+        <div class="check-item">
+          <input type="checkbox" id="church" name="church_completed" value="1">
+          <label for="church">⛪ Church (18:00 – 21:00)</label>
+        </div>
+        {% endif %}
+        {% if is_sunday %}
+        <div class="check-item">
+          <input type="checkbox" id="church_sun" name="church_completed" value="1">
+          <label for="church_sun">⛪ Church</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="weekly_plan" name="weekly_planning" value="1">
+          <label for="weekly_plan">📋 Weekly planning completed</label>
+        </div>
+        {% endif %}
+
+        <div class="check-item">
+          <input type="checkbox" id="lab" name="lab_completed" value="1">
+          <label for="lab">🧪 Lab work completed</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="class" name="class_completed" value="1">
+          <label for="class">📚 {% if today.weekday() < 4 %}Data Engineering class attended{% else %}Studying completed{% endif %}</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="ate" name="ate_properly" value="1">
+          <label for="ate">🍽️ Ate properly</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="travel" name="travel_completed" value="1">
+          <label for="travel">🚌 Travel completed safely</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="notes" name="lab_notes_recorded" value="1">
+          <label for="notes">📝 Recorded lab notes/results</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="rest" name="rest_completed" value="1">
+          <label for="rest">😴 Rested after class</label>
+        </div>
+        <div class="check-item">
+          <input type="checkbox" id="selfcare" name="selfcare_completed" value="1">
+          <label for="selfcare">💆🏾‍♀️ Self-care</label>
+        </div>
+      </div>
+
+      <!-- NOTES CARD -->
+      <div class="checklist-card" style="animation:fadeInUp 0.5s ease 0.1s both;">
+        <h2>📝 Reflections</h2>
+
+        <div class="form-group">
+          <label for="main_achievement">Main lab task completed today</label>
+          <input type="text" id="main_achievement" name="main_achievement" placeholder="What did you accomplish in the lab today?">
+        </div>
+
+        <div class="form-group">
+          <label for="tomorrow_task">Major task for tomorrow</label>
+          <input type="text" id="tomorrow_task" name="tomorrow_major_task" placeholder="What's the priority tomorrow?">
+        </div>
+
+        <div class="form-group">
+          <label>Mood today</label>
+          <div class="mood-row">
+            <button type="button" class="mood-btn" data-mood="Energised">⚡ Energised</button>
+            <button type="button" class="mood-btn" data-mood="Focused">🎯 Focused</button>
+            <button type="button" class="mood-btn" data-mood="Tired">😴 Tired</button>
+            <button type="button" class="mood-btn" data-mood="Stressed">😤 Stressed</button>
+            <button type="button" class="mood-btn" data-mood="Happy">😊 Happy</button>
+            <button type="button" class="mood-btn" data-mood="Overwhelmed">😩 Overwhelmed</button>
+            <button type="button" class="mood-btn" data-mood="Sick">🤢 Sick</button>
+          </div>
+          <input type="hidden" id="mood-value" name="mood">
+        </div>
+
+        <div class="form-group">
+          <label for="notes_field">Notes</label>
+          <textarea id="notes_field" name="notes" rows="4" placeholder="Anything else on your mind today?"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">✨ Save Today's Check-In</button>
+    </form>
+  </div>
+
+  <footer>
+    Built with <span>♥</span> for better wellbeing · Princess Tracker
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
