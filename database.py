@@ -1,15 +1,17 @@
 """
 database.py — PostgreSQL connection, queries, helpers
 """
-
 import psycopg2
 import psycopg2.extras
 from config import DB_CONFIG
 from datetime import date, timedelta
+import os
 
 
 def get_db_connection():
-    """Returns a new psycopg2 connection."""
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url:
+        return psycopg2.connect(database_url)
     return psycopg2.connect(**DB_CONFIG)
 
 
