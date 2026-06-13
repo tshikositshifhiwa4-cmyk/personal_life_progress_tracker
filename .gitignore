@@ -1,4 +1,4 @@
-# Secrets — never commit these
+# Secrets 
 .env
 
 # Python
@@ -25,5 +25,3 @@ build/
 *.log
 /tmp/princess_*.log
 
-# Images (optional — remove this line if you want to commit your profile photo)
-static/images/profile.jpg
